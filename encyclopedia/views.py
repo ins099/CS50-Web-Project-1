@@ -11,8 +11,8 @@ from markdown2 import Markdown
 
 class NewFormEntry(forms.Form):
     title = forms.CharField(label = 'Title')
-    content = forms.CharField(label= 'Content' , widget= forms.Textarea(attrs= {'class' : 'form-control col-md-8 col-lg-10',    "rows":8}))
-    edit = forms.BooleanField(initial= False, widget= forms.HiddenInput(), required = False)
+    content = forms.CharField(label= 'Content' , widget=forms.Textarea(attrs= {'class' : 'form-control col-md-8 col-lg-10', "rows":8, "placeholder": "## Main Heading"}))
+    edit = forms.BooleanField(initial= False, widget= forms.HiddenInput() , required = False)
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
@@ -25,14 +25,13 @@ def entry(request, entry):
     if entryPage is None:
         return render(request, "encyclopedia/error.html", {
             "entryTitle": entry,
-            "error_link": "/",
-            "massege1": "An unexpected error has occured, If your want to see all entries ",
-            "massege2": "Hey Programmers...Please enter valid contents, We will definitely give best result...Thank you!!!"    
+            "error_link": "/",  
         })
     else:
         return render(request, "encyclopedia/entry.html", {
             "entry": md.convert(entryPage),
-            "entryTitle": entry
+            "entryTitle": entry,
+            "link": f"/wiki/{entry}/edit"
         })
 
         
@@ -84,19 +83,22 @@ def search(request):
     })
 
 def edit(request, entry):
-    entryPage = util.get_entry(entry)
-    if entryPage is None:
-        return render(request, "encyclopedia/error.html", {
-            "title": entry
-        })
-    else:
-        form = NewFormEntry()
-        form.fields["title"].initial = entry     
-        form.fields["title"].widget = forms.HiddenInput()
-        form.fields["content"].initial = entryPage
-        form.fields["edit"].initial = True
-        return render(request, "encyclopedia/newentry.html", {
-            "form": form,
-            "edit": form.fields["edit"].initial,
-            "entryTitle": form.fields["title"].initial
-        }) 
+    
+    if request.method == "GET":
+        page = util.get_entry(entry)
+    
+        if page is None:
+               return render (request, 'encyclopedia/error.html', {
+               "err_value":entry
+            })
+        else:
+            form = NewFormEntry()
+            form.fields["title"].initial = entry
+            form.fields["content"].initial = page
+            form.fields["edit"].initial = True
+        
+            return render(request, 'encyclopedia/newentry.html', {
+                "form":form,
+                "edit": form.fields["edit"].initial,
+                "title": form.fields['title'].initial,
+            }) 

@@ -1,2 +1,0 @@
-Khuli sarak mai
-kjdfsd
