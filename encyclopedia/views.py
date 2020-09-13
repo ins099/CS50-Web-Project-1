@@ -20,7 +20,7 @@ def index(request):
     })
 
 def entry(request, entry):
-    markdowner = Markdown()
+    md = Markdown()
     entryPage = util.get_entry(entry)
     if entryPage is None:
         return render(request, "encyclopedia/error.html", {
@@ -31,40 +31,11 @@ def entry(request, entry):
         })
     else:
         return render(request, "encyclopedia/entry.html", {
-            "entry": markdowner.convert(entryPage),
+            "entry": md.convert(entryPage),
             "entryTitle": entry
         })
 
-def entry(request, entry):
-    markdowner = Markdown()
-    entryPage = util.get_entry(entry)
-    if entryPage is None:
-        return render(request, "encyclopedia/nonExistingEntry.html", {
-            "entryTitle": entry,
-            "error_link": "/",
-            "massege1": "An unexpected error has occured, If your want to see all entries ",
-            "massege2": "Hey Programmers...Please enter valid contents, We will definitely give best result...Thank you!!!"    
-        })
-    else:
-        return render(request, "encyclopedia/entry.html", {
-            "entry": markdowner.convert(entryPage),
-            "entryTitle": entry
-        })
-# def entry(request, entry):
-#     markdowner = Markdown()
-#     entrypage = util.get_entry(entry)
-
-#     if entrypage is None:
-#         return render(request, "encyclopedia/error.html",{
-#             "err_value":entry
-#         })
-    
-#     else:
-#         return render(request, "encyclopedia/entry.html",{
-#             "entry":markdowner.convert(entrypage),
-#             "title":entry
-#         })
-
+        
 def newentry(request):
     if request.method == "POST":
         form = NewFormEntry(request.POST)
@@ -96,34 +67,6 @@ def random(request):
     random = secrets.choice(entries)
     return HttpResponseRedirect(reverse('entry' , kwargs= {"entry":random}))
     
-# def search(request):
-#     sch_term = request.GET.get('q')
-    
-#     entries = util.list_entries()
-    
-#     sch_term = sch_term.casefold()
-    
-    
-#     for entry in entries:
-#         if sch_term == entry.casefold():
-#             return HttpResponseRedirect(reverse('entry', kwargs = {"entry":sch_term}))
-        
-#         else:
-#             substrings= []
-#             for entry in entries:
-#                 if sch_term in entry.casefold():
-#                     substrings.append(entry)
-#                     return render(request, 'encyclopedia/index.html', {
-#                          "entries":substrings,
-                         
-#                     })
-                    
-#                 else:
-#                     return render(request, 'encyclopedia/error.html', {
-#                         "error1": "Required Not found!!!"
-#                     })
-
-
 def search(request):
     value = request.GET.get('q','')
     if(util.get_entry(value) is not None):
@@ -139,4 +82,21 @@ def search(request):
         "search": True,
         "value": value
     })
-                    
+
+def edit(request, entry):
+    entryPage = util.get_entry(entry)
+    if entryPage is None:
+        return render(request, "encyclopedia/error.html", {
+            "title": entry
+        })
+    else:
+        form = NewFormEntry()
+        form.fields["title"].initial = entry     
+        form.fields["title"].widget = forms.HiddenInput()
+        form.fields["content"].initial = entryPage
+        form.fields["edit"].initial = True
+        return render(request, "encyclopedia/newentry.html", {
+            "form": form,
+            "edit": form.fields["edit"].initial,
+            "entryTitle": form.fields["title"].initial
+        }) 
