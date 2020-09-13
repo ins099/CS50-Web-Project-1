@@ -1,3 +1,5 @@
-## Python
+# Python
 
-It is a High-Level programming language
+
+
+Python is a programming language that can be used both for writing **command-line scripts** or building **web applications**.

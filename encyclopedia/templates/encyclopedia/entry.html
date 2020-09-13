@@ -6,6 +6,13 @@
 {% endblock %}
 
 {% block body %}
-    {{ entry|safe }}
-    <a href= "{{ link }}">Edit</a>
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-4">{{ entry|safe }}</h1>
+      </div>
+    </div>
+    <center><a href= "{{ link }}" ><button type="button" class="btn btn-outline-dark btn-lg">Edit</button></a></center>
+    
+  </div>
 {% endblock %}
+

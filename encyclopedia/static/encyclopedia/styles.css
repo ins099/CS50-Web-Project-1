@@ -16,7 +16,6 @@ textarea {
     height: 90vh;
     width: 80%;
 }
-
 .main {
     padding: 10px;
 }
@@ -35,4 +34,34 @@ textarea {
 
 .sidebar h2 {
     margin-top: 5px;
+}
+
+a{
+    font-size: 20px;
+    line-height-step: 1;
+    color: black;   
+}
+
+.boxe{
+    margin-top: 20px;
+}
+
+img{
+    width: 150px;
+    margin: 40px 0;
+}
+
+h3{
+    margin-bottom:30px ;
+}
+
+.size{
+    width: 4;
+    display: block;
+}
+
+.di{
+    padding: 5%;
+    line-height: 10px;
+    background-color: #e9ecef;
 }

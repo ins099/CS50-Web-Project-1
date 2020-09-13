@@ -8,8 +8,11 @@
 
 <form action = "{% url 'newentry' %}" method="POST"> 
     {% csrf_token %}
-        {{form}}
-        <input type="submit">
+    <div class="form-group di">
+        <h2 style="text-align: center;">Creating New Wiki</h2>
+        {{form.as_p}}
+        <button type="submit" class="btn btn-outline-dark btn-sm">Submit</button>
+    </div>
 </form>
 
 {% endblock %}

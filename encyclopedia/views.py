@@ -10,8 +10,21 @@ from . import util
 from markdown2 import Markdown
 
 class NewFormEntry(forms.Form):
-    title = forms.CharField(label = 'Title')
-    content = forms.CharField(label= 'Content' , widget=forms.Textarea(attrs= {'class' : 'form-control col-md-8 col-lg-10', "rows":8, "placeholder": "## Main Heading"}))
+    title = forms.CharField(label = 'Title', widget= forms.TextInput(
+        attrs={
+            'class':["form-control"],
+            'placeholder':"Title",
+        }
+    )
+                            )
+    content = forms.CharField(label= 'Content', widget=forms.Textarea(
+        attrs= {
+            "class":"form-control",
+            "rows":"3",
+            "placeholder": "## Main Heading"
+            }
+        )
+                              )
     edit = forms.BooleanField(initial= False, widget= forms.HiddenInput() , required = False)
 
 def index(request):
@@ -24,8 +37,8 @@ def entry(request, entry):
     entryPage = util.get_entry(entry)
     if entryPage is None:
         return render(request, "encyclopedia/error.html", {
-            "entryTitle": entry,
-            "error_link": "/",  
+            "value": entry,
+            "entry":True 
         })
     else:
         return render(request, "encyclopedia/entry.html", {
@@ -49,7 +62,9 @@ def newentry(request):
             else: 
                 return render(request, "encyclopedia/error.html", {
                     "form":form,
-                    "error1":"Page Alreday exists"
+                    "newentry": True,
+                    "title":title
+                    
                 })
 
         else:
@@ -89,7 +104,8 @@ def edit(request, entry):
     
         if page is None:
                return render (request, 'encyclopedia/error.html', {
-               "err_value":entry
+               "value":entry,
+               "entry":True
             })
         else:
             form = NewFormEntry()

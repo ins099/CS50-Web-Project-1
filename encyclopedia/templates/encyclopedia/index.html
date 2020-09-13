@@ -5,12 +5,26 @@
 {% endblock %}
 
 {% block body %}
-    <h1>All Pages</h1>
 
-    <ul>
+<div class="container-fluid di" style=" background-color: #e9ecef;">
+
+    {% if search %}
+        
+        <h3>Results of {{value}}</h3>
+        
+    {% else %}
+
+           <h1>All Pages</h1>
+    
+    {% endif %}   
+    <ol>
+        <div>
         {% for entry in entries %}
-            <a href="wiki/{{entry}}"><li>{{ entry }}</li></a>
+             <a style= " font-size: 25px; color: black; ;"href="wiki/{{entry}}" ><li style= " width: 20%; padding: 1% 0;">{{ entry }}</li></a>
         {% endfor %}
-    </ul>
-
+        </div>
+    </ol>
+</div>
 {% endblock %}
+
+

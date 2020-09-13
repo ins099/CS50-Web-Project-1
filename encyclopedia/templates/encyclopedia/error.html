@@ -4,10 +4,32 @@
     Error
 {% endblock %}
 
-{% block body %}
+                    <!-- body -->
 
-    {{error1}}
+{% block body %}
     
-    <p> Error 404: Couldn't find {{err_value}}. Enter Valid Credentials.</p>
+    {% if entry %}
+        <div class= "di" style="text-align: center;">
+        
+            <h3>Error 404</h3>
+            <p>The <b>{{value}}</b> wiki doesn't Exists!</p>
+            <a href="{% url 'newentry' %}"><button type="button" class="btn-sm btn-dark">Create New</button></a>
+            <a href="{% url 'index' %}"><button type="button" class="btn-sm btn-dark">Home</button></a>    
+        
+        </div>
+        
+    {% elif newentry == True %}
+        
+        <div class = "di" style="text-align: center;">
+
+            <h3>Wiki Already Exist!</h3>
+            <br>
+            <p>View Already Exist Wiki!</p>
+            <br>
+            <a href="wiki/{{title}}"><button type="button" class="btn-sm btn-dark">View!</button></a>
+
+        </div>
+
+    {% endif %}    
 
 {% endblock %}
